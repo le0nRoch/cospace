@@ -8,19 +8,12 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class RegisterUserInput {
+public class LoginUserInput {
     @NotBlank
     @Email
     @Size(max = 50)
     private String email;
-
     @NotBlank
     @Size(min = 8, max = 128)
     private String password;
-    @NotBlank
-    @Size(max = 30)
-    private String firstName;
-    @NotBlank
-    @Size(max = 30)
-    private String lastName;
 }
