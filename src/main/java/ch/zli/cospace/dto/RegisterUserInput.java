@@ -1,7 +1,7 @@
 package ch.zli.cospace.dto;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
@@ -9,18 +9,18 @@ import lombok.Data;
 @Builder
 @Data
 public class RegisterUserInput {
-    @NotNull
+    @NotBlank
     @Email
     @Size(max = 50)
     private String email;
 
-    @NotNull
+    @NotBlank
     @Size(min = 8, max = 128)
     private String password;
-    @NotNull
+    @NotBlank
     @Size(max = 30)
     private String firstName;
-    @NotNull
+    @NotBlank
     @Size(max = 30)
     private String lastName;
 }
