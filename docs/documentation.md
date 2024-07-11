@@ -31,7 +31,7 @@ die Entscheidung zu begründen.
 
 ## Fachklassendiagramm
 
-![Fachklassendiagramm](./images/fachklassendiagram.png)
+![Fachklassendiagramm](./images/fachklassen-diagram.png)
 
 ## Schnittstellenplanung
 
