@@ -32,4 +32,8 @@ build/
 ### VS Code ###
 .vscode/
 
+### Env ###
 .env
+
+### database ###
+db/
