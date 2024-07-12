@@ -22,7 +22,7 @@ public class UserService {
         return userRepository.findUserByEmail(email);
     }
 
-    public User save(RegisterUserInput registerUserInput) {
+    public void save(RegisterUserInput registerUserInput) {
         // If there are no users in the database, the first user will be an admin
         var role = Role.MEMBER;
         if (userRepository.count() == 0) {
@@ -37,6 +37,10 @@ public class UserService {
                 .role(role)
                 .build();
         userRepository.saveAndFlush(user);
-        return user;
+    }
+
+    public void save(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.saveAndFlush(user);
     }
 }

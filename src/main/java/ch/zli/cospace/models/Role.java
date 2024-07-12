@@ -1,5 +1,9 @@
 package ch.zli.cospace.models;
 
+import lombok.experimental.FieldNameConstants;
+
+@FieldNameConstants(onlyExplicitlyIncluded = true)
 public enum Role {
-    MEMBER, ADMIN
+    @FieldNameConstants.Include MEMBER,
+    @FieldNameConstants.Include ADMIN
 }
