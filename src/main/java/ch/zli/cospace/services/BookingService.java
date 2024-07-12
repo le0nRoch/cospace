@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -26,6 +27,10 @@ public class BookingService {
         return bookingRepository.findAll();
     }
 
+    public Optional<Booking> findById(Long id) {
+        return bookingRepository.findById(id);
+    }
+
     public List<Booking> findByUserId(Long userId) throws NoSuchElementException {
         var user = userService.findUserById(userId).orElseThrow();
         return bookingRepository.findByCreator(user);
@@ -37,5 +42,9 @@ public class BookingService {
         booking.getCreator().setBookings(list);
         bookingRepository.save(booking);
         userService.save(booking.getCreator());
+    }
+
+    public void update(Booking booking) {
+        bookingRepository.save(booking);
     }
 }

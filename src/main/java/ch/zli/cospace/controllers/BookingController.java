@@ -1,6 +1,7 @@
 package ch.zli.cospace.controllers;
 
 import ch.zli.cospace.dto.CreateBookingInput;
+import ch.zli.cospace.dto.UpdateBookingInput;
 import ch.zli.cospace.models.Booking;
 import ch.zli.cospace.models.BookingStatus;
 import ch.zli.cospace.models.Role;
@@ -59,9 +60,8 @@ public class BookingController {
 
         try {
 
-        return ResponseEntity.ok(bookingService.findByUserId(userId));
-        }
-        catch (NoSuchElementException e) {
+            return ResponseEntity.ok(bookingService.findByUserId(userId));
+        } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
@@ -85,8 +85,69 @@ public class BookingController {
 
             bookingService.save(booking);
             return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        catch (NoSuchElementException e) {
+    }
+
+    // member should be able to cancel his own booking
+    // admin should be able to edit all bookings
+    @PatchMapping("/{id}")
+    @Operation(summary = "Update a booking", responses = {
+            @ApiResponse(responseCode = "200", description = "Booking updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Validation failed"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "404", description = "Booking not found")
+    })
+    public ResponseEntity<Void> updateBooking(@PathVariable Long id, @RequestBody UpdateBookingInput bookingInput) {
+
+        try {
+            var user = authService.getUser().orElseThrow();
+
+            if (user.getRole() == Role.MEMBER) {
+
+                // member should not be able to edit other members bookings
+                if (user.getBookings().stream().noneMatch(booking -> booking.getId().equals(id))) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                }
+
+                // member can only cancel his own booking
+                if (bookingInput.getStatus() != BookingStatus.CANCELLED) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                }
+
+                try {
+                    var booking = bookingService.findById(id).orElseThrow();
+                    booking.setStatus(BookingStatus.CANCELLED);
+                    bookingService.update(booking);
+                    return ResponseEntity.ok().build();
+                } catch (NoSuchElementException e) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                }
+            }
+
+            // admin can edit all bookings
+            try {
+                var booking = bookingService.findById(id).orElseThrow();
+                if (bookingInput.getDate() != null) {
+                    booking.setDate(bookingInput.getDate());
+                }
+                if (bookingInput.getTimeSlot() != null) {
+                    booking.setTimeSlot(bookingInput.getTimeSlot());
+                }
+                if (bookingInput.getStatus() != null) {
+                    booking.setStatus(bookingInput.getStatus());
+                }
+                if (bookingInput.getDescription() != null) {
+                    booking.setDescription(bookingInput.getDescription());
+                }
+                bookingService.update(booking);
+                return ResponseEntity.ok().build();
+            } catch (NoSuchElementException e) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+        } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
