@@ -36,3 +36,8 @@ This happens only if the `spring.profiles.active` property is set to `dev`.
 | User Id | Date           | Timeslot | Status    | Description |
 |---------|----------------|----------|-----------|-------------|
 | 4       | {current date} | FULL_DAY | REQUESTED | {null}      |
+
+## Documentation
+
+The project was documented during the development. \
+The documentation can be found in the [docs](./docs/documentation.md) directory.
