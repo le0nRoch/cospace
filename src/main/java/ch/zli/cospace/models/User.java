@@ -1,5 +1,6 @@
 package ch.zli.cospace.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -36,6 +37,7 @@ public class User implements UserDetails {
     private String password;
 
     @OneToMany(mappedBy = "creator")
+    @JsonManagedReference
     private List<Booking> bookings;
 
     public User(Role role, String email, String firstName, String lastName, String password) {
