@@ -48,7 +48,6 @@ Bei all diesen Endpoints muss der Benutzer authentifiziert sein und die richtige
 
 | Methode | Pfad        | Beschreibung                                   | Erfolg- oder Fehlerszenario                            | Rückgabewert        |
 |---------|-------------|------------------------------------------------|--------------------------------------------------------|---------------------|
-| GET     | /users      | Gibt alle Benutzer zurück (nur für Admins)     | Erfolg: 200 OK                                         | Liste von Benutzern |
 | POST    | /users      | Erstellt einen neuen Benutzer (nur für Admins) | Erfolg: 201 Created, Fehler: 400 Bad Request           | Nichts              |
 | PATCH   | /users/{id} | Aktualisiert den Benutzer. {id} ist die UserID | Erfolg: 200 OK, Fehler: 400 Bad Request, 404 Not Found | Nichts              |
 | DELETE  | /users{id}  | Löscht den Benutzer. {id} ist die UserID       | Erfolg: 204 No Content                                 | Nichts              |
