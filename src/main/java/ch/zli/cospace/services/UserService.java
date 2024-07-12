@@ -22,6 +22,10 @@ public class UserService {
         return userRepository.findUserByEmail(email);
     }
 
+    public Optional<User> findUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
     public void save(RegisterUserInput registerUserInput) {
         // If there are no users in the database, the first user will be an admin
         var role = Role.MEMBER;
