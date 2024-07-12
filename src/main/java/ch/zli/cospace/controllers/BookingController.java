@@ -151,4 +151,15 @@ public class BookingController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
+    @DeleteMapping("/{id}")
+    @RolesAllowed(Role.Fields.ADMIN)
+    @Operation(summary = "Delete a booking", responses = {
+            @ApiResponse(responseCode = "204", description = "Booking deleted successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
+        bookingService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
