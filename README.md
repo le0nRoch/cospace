@@ -1,4 +1,19 @@
-# Coworking Space
+# Cospace Platform
+
+Cospace is a platform where people can request a space in a coworking space in zurich. \
+Admins then can approve or decline the request.
+
+## Setup
+
+- Clone the repository
+- Open the project in your IDE
+- Install the maven dependencies
+
+## Run
+
+- Run the docker-compose file in the root directory
+- Run the application
+- Open the application in your browser at `http://localhost:8080`
 
 ## Test Data
 
