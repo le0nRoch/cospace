@@ -14,6 +14,7 @@ Admins then can approve or decline the request.
 - Run the docker-compose file in the root directory
 - Run the application
 - Open the application in your browser at `http://localhost:8080`
+- (Optional) Swagger UI is available at `http://localhost:8080/swagger`
 
 ## Test Data
 
@@ -35,4 +36,3 @@ This happens only if the `spring.profiles.active` property is set to `dev`.
 | User Id | Date           | Timeslot | Status    | Description |
 |---------|----------------|----------|-----------|-------------|
 | 4       | {current date} | FULL_DAY | REQUESTED | {null}      |
-

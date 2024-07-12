@@ -68,4 +68,23 @@ Bei all diesen Endpoints muss der Benutzer authentifiziert sein und die richtige
 
 ![Sequenzdiagramm](./images/sequenz-diagram.png)
 
+## Schichtentrennung
+
+lb-cospace \
+├── src \
+│   ├── main \
+│   │   ├── java \
+│   │   │   └── ch.zli.cospace \
+│   │   │       ├── controllers (REST API controllers) \
+│   │   │       ├── dto (Data Transfer Objects) \
+│   │   │       ├── models (Domain models/entities) \
+│   │   │       ├── repositories (Spring Data repositories) \
+│   │   │       ├── security (Security-related classes) \
+│   │   │       └── services (Business logic services) \
+│   │   └── resources \
+│   │       └── application.properties (Main configuration file) \
+└   └── test (Unit and integration tests)
+
 ## Versionierung
+
+Die Versionierung erfolgt über Git. Ein zwischenstand ist [hier](./../git-logs.txt) zu finden.
