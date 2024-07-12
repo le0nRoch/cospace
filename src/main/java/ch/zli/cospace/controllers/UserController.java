@@ -5,6 +5,7 @@ import ch.zli.cospace.dto.UpdateUserInput;
 import ch.zli.cospace.models.Role;
 import ch.zli.cospace.models.User;
 import ch.zli.cospace.services.AuthService;
+import ch.zli.cospace.services.BookingService;
 import ch.zli.cospace.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -17,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
+
 @RestController
 @RequestMapping("/users")
 @Tag(name = "users", description = "Endpoints for user management")
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final BookingService bookingService;
     private final AuthService authService;
 
 
@@ -59,16 +63,7 @@ public class UserController {
     public ResponseEntity<Void> updateUser(@PathVariable Long id, @Valid @RequestBody UpdateUserInput userInput) {
 
         // Check if user is authorized to update user
-        try {
-            var user = authService.getUser().orElseThrow();
-            if (user.getRole() == Role.MEMBER && !user.getId().equals(id)) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-            }
-
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        if (membertriesToChangeOtherUser(id)) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         // check if user is trying to update role and is not an admin
         if (authService.hasRole(Role.MEMBER) && userInput.getRole() != null) {
@@ -107,5 +102,40 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Delete a user",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "User deleted if exists"),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            }
+    )
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+
+        // Check if user is authorized to delete user
+        if (membertriesToChangeOtherUser(id)) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        try {
+
+            bookingService.deleteAllBookingsofUser(id);
+            userService.delete(id);
+        } catch (NoSuchElementException e) {
+            // ignore
+        }
+            return ResponseEntity.noContent().build();
+    }
+
+    private boolean membertriesToChangeOtherUser(@PathVariable Long id) {
+        try {
+            var user = authService.getUser().orElseThrow();
+            if (user.getRole() == Role.MEMBER && !user.getId().equals(id)) {
+                return true;
+            }
+        } catch (NoSuchElementException e) {
+            return true;
+        }
+        return false;
     }
 }
