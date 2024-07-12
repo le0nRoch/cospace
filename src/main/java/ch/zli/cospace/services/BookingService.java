@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -28,5 +29,13 @@ public class BookingService {
     public List<Booking> findByUserId(Long userId) throws NoSuchElementException {
         var user = userService.findUserById(userId).orElseThrow();
         return bookingRepository.findByCreator(user);
+    }
+
+    public void save(Booking booking) {
+        var list  = new ArrayList<Booking>();
+        list.add(booking);
+        booking.getCreator().setBookings(list);
+        bookingRepository.save(booking);
+        userService.save(booking.getCreator());
     }
 }

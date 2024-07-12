@@ -3,6 +3,7 @@ package ch.zli.cospace.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -26,11 +27,11 @@ public class Booking {
     @Column(nullable = false)
     private LocalDate date;
 
-    @NonNull
+    @NotNull
     @Enumerated(EnumType.STRING)
     private TimeSlot timeSlot;
 
-    @NonNull
+    @NotNull
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
 
