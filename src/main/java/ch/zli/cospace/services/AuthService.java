@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -28,10 +29,21 @@ public class AuthService {
         }
     }
 
-
     public Optional<User> getUser() throws AuthenticationException {
        var auth = getAuthentication();
          return userService.findUserByEmail(auth.getName());
+    }
+
+    public boolean membertriesToChangeOtherUser(Long id) {
+        try {
+            var user = getUser().orElseThrow();
+            if (user.getRole() == Role.MEMBER && !user.getId().equals(id)) {
+                return true;
+            }
+        } catch (NoSuchElementException e) {
+            return true;
+        }
+        return false;
     }
 
     private Authentication getAuthentication() throws AuthenticationException {

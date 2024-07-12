@@ -46,23 +46,23 @@ die Entscheidung zu begründen.
 
 Bei all diesen Endpoints muss der Benutzer authentifiziert sein und die richtigen Berechtigungen besitzen.
 
-| Methode | Pfad        | Beschreibung                                   | Erfolg- oder Fehlerszenario                            | Rückgabewert        |
-|---------|-------------|------------------------------------------------|--------------------------------------------------------|---------------------|
-| POST    | /users      | Erstellt einen neuen Benutzer (nur für Admins) | Erfolg: 201 Created, Fehler: 400 Bad Request           | Nichts              |
-| PATCH   | /users/{id} | Aktualisiert den Benutzer. {id} ist die UserID | Erfolg: 200 OK, Fehler: 400 Bad Request, 404 Not Found | Nichts              |
-| DELETE  | /users{id}  | Löscht den Benutzer. {id} ist die UserID       | Erfolg: 204 No Content                                 | Nichts              |
+| Methode | Pfad        | Beschreibung                                   | Erfolg- oder Fehlerszenario                            | Rückgabewert |
+|---------|-------------|------------------------------------------------|--------------------------------------------------------|--------------|
+| POST    | /users      | Erstellt einen neuen Benutzer (nur für Admins) | Erfolg: 201 Created, Fehler: 400 Bad Request           | Nichts       |
+| PATCH   | /users/{id} | Aktualisiert den Benutzer. {id} ist die UserID | Erfolg: 200 OK, Fehler: 400 Bad Request, 404 Not Found | Nichts       |
+| DELETE  | /users{id}  | Löscht den Benutzer. {id} ist die UserID       | Erfolg: 204 No Content                                 | Nichts       |
 
 ### Booking Endpoints
 
 Bei all diesen Endpoints muss der Benutzer authentifiziert sein und die richtigen Berechtigungen besitzen.
 
-| Methode | Pfad               | Beschreibung                                                        | Erfolg- oder Fehlerszenario                                           | Rückgabewert        |
-|---------|--------------------|---------------------------------------------------------------------|-----------------------------------------------------------------------|---------------------|
-| GET     | /bookings          | Gibt alle Buchungen zurück (nur für Admins)                         | Erfolg: 200 OK                                                        | Liste von Buchungen |
-| GET     | /bookings/{userId} | Gibt alle Buchungen eines Benutzers zurück. {userId} ist die UserID | Erfolg: 200 OK, Fehler: 403 Forbidden                                 | Liste von Buchungen |
-| POST    | /bookings          | Erstellt eine neue Buchung                                          | Erfolg: 201 Created, Fehler: 400 Bad Request                          | Nichts              |
-| PATCH   | /bookings/{id}     | Aktualisiert die Buchung. {id} ist die BookingID                    | Erfolg: 200 OK, Fehler: 400 Bad Request, 404 Not Found, 403 Forbidden | Nichts              |
-| DELETE  | /bookings/{id}     | Löscht die Buchung. {id} ist die BookingID                          | Erfolg: 204 No Content, Fehler: 403 Forbidden                         | Nichts              |
+| Methode | Pfad               | Beschreibung                                                        | Erfolg- oder Fehlerszenario                            | Rückgabewert        |
+|---------|--------------------|---------------------------------------------------------------------|--------------------------------------------------------|---------------------|
+| GET     | /bookings          | Gibt alle Buchungen zurück (nur für Admins)                         | Erfolg: 200 OK                                         | Liste von Buchungen |
+| GET     | /bookings/{userId} | Gibt alle Buchungen eines Benutzers zurück. {userId} ist die UserID | Erfolg: 200 OK, Fehler: 404: Not Found                 | Liste von Buchungen |
+| POST    | /bookings          | Erstellt eine neue Buchung                                          | Erfolg: 201 Created, Fehler: 400 Bad Request           | Nichts              |
+| PATCH   | /bookings/{id}     | Aktualisiert die Buchung. {id} ist die BookingID                    | Erfolg: 200 OK, Fehler: 400 Bad Request, 404 Not Found | Nichts              |
+| DELETE  | /bookings/{id}     | Löscht die Buchung. {id} ist die BookingID                          | Erfolg: 204 No Content                                 | Nichts              |
 
 ## Sequenzdiagramm
 

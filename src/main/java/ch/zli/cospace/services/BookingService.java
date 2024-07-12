@@ -24,4 +24,9 @@ public class BookingService {
     public List<Booking> findAll() {
         return bookingRepository.findAll();
     }
+
+    public List<Booking> findByUserId(Long userId) throws NoSuchElementException {
+        var user = userService.findUserById(userId).orElseThrow();
+        return bookingRepository.findByCreator(user);
+    }
 }

@@ -63,7 +63,7 @@ public class UserController {
     public ResponseEntity<Void> updateUser(@PathVariable Long id, @Valid @RequestBody UpdateUserInput userInput) {
 
         // Check if user is authorized to update user
-        if (membertriesToChangeOtherUser(id)) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        if (authService.membertriesToChangeOtherUser(id)) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         // check if user is trying to update role and is not an admin
         if (authService.hasRole(Role.MEMBER) && userInput.getRole() != null) {
@@ -115,7 +115,7 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
 
         // Check if user is authorized to delete user
-        if (membertriesToChangeOtherUser(id)) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        if (authService.membertriesToChangeOtherUser(id)) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         try {
 
@@ -125,17 +125,5 @@ public class UserController {
             // ignore
         }
             return ResponseEntity.noContent().build();
-    }
-
-    private boolean membertriesToChangeOtherUser(@PathVariable Long id) {
-        try {
-            var user = authService.getUser().orElseThrow();
-            if (user.getRole() == Role.MEMBER && !user.getId().equals(id)) {
-                return true;
-            }
-        } catch (NoSuchElementException e) {
-            return true;
-        }
-        return false;
     }
 }
