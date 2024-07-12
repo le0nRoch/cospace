@@ -74,11 +74,6 @@ public class SecurityConfiguration {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .exceptionHandling(e ->
-                        e.authenticationEntryPoint((request, response, authException) ->
-                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage())
-                        )
-                )
                 .authorizeHttpRequests(authz ->
                         authz
                                 .requestMatchers("/login", "/register", "/v3/api-docs/**", "/swagger", "/swagger-ui/**")
@@ -89,6 +84,11 @@ public class SecurityConfiguration {
                 .addFilterBefore(
                         jwtFilter,
                         UsernamePasswordAuthenticationFilter.class
+                )
+                .exceptionHandling(e ->
+                        e.authenticationEntryPoint((request, response, authException) ->
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage())
+                        )
                 );
 
         return http.build();
